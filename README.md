@@ -11,6 +11,8 @@ analysis of the vendor library and then verified against the hardware, byte for 
     LICENSE       MIT
     README.md     this file
 
+![Deckhand main window](docs/images/main.jpg)
+
 ## What it does
 
 * 15 keys + a 1×3 display window, 4 host-side pages per profile
@@ -20,6 +22,8 @@ analysis of the vendor library and then verified against the hardware, byte for 
 * profiles saved as `.sdprofile`, **Save / Save As**, storage folders configurable in Settings
 * follows the system language (English, 简体中文, Bahasa Melayu)
 * MCP server so an agent can drive it through the app's control socket
+
+![The image library](docs/images/library.jpg)
 
 ## Status — verified on the hardware
 
@@ -32,6 +36,8 @@ analysis of the vendor library and then verified against the hardware, byte for 
 | clearing a key, then Send to Device blanks it | verified |
 | pages and page-navigation actions | verified |
 | brightness · wake · commit · heartbeat | implemented from the decompile |
+
+![In-app help](docs/images/help.jpg)
 
 ## How the protocol was recovered
 
