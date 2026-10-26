@@ -20,6 +20,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var store: ProfileStore?
     var saveHandler: (() -> Void)?
 
+    /// Closing the window must not kill the panel: the process keeps the HID handle open and the
+    /// menu-bar item is how you get the window back. Turning the menu bar off restores quit-on-close.
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        !AppSettings.shared.menuBarEnabled
+    }
+
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let dirty = store?.hasUnsavedChanges ?? false
         let newOnes = store?.unsavedProfileIDs.count ?? 0
