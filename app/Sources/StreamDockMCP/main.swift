@@ -38,6 +38,13 @@ func callApp(_ request: [String: Any], timeout: TimeInterval = 8, retried: Bool 
         }
     }
     guard connected else {
+        // the app writes this marker while MCP control is switched off, so the message can be honest
+        let marker = URL(fileURLWithPath: socketPath).deletingLastPathComponent()
+            .appendingPathComponent("mcp.disabled")
+        if FileManager.default.fileExists(atPath: marker.path) {
+            return ["ok": false,
+                    "error": "MCP control is turned off in Deckhand (Settings › General › Allow MCP control)."]
+        }
         return ["ok": false,
                 "error": "Deckhand is not running (no control socket at \(socketPath))"]
     }

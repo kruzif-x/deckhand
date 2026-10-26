@@ -81,6 +81,10 @@ struct DeckhandApp: App {
         .defaultSize(width: 1240, height: 780)
         .windowToolbarStyle(.unified)
         .commands {
+            CommandGroup(replacing: .help) {
+                Button("Deckhand Help") { WindowBridge.shared.showHelp() }
+                    .keyboardShortcut("?", modifiers: .command)
+            }
             CommandGroup(replacing: .newItem) {
                 Button("New Profile") {
                     NotificationCenter.default.post(name: .init("deck.newProfile"), object: nil)
@@ -128,6 +132,12 @@ struct DeckhandApp: App {
                 .keyboardShortcut("r", modifiers: [.command, .shift])
             }
         }
+
+        Window("Deckhand Help", id: "help") {
+            HelpView()
+        }
+        .defaultSize(width: 860, height: 600)
+        .windowToolbarStyle(.unified)
 
         Settings {
             SettingsView()

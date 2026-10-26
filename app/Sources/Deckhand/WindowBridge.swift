@@ -12,6 +12,18 @@ final class WindowBridge {
 
     /// Set from ContentView, where the environment action is available.
     var openMainWindow: (() -> Void)?
+    /// Set from HelpView, which owns the help scene.
+    var openHelpWindow: (() -> Void)?
+
+    func showHelp() {
+        NSApp.activate(ignoringOtherApps: true)
+        if let help = NSApp.windows.first(where: { $0.identifier?.rawValue.contains("help") == true
+            || $0.title.hasPrefix("Deckhand Help") }) {
+            help.makeKeyAndOrderFront(nil)
+            return
+        }
+        openHelpWindow?()
+    }
 
     func show() {
         NSApp.activate(ignoringOtherApps: true)

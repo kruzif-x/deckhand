@@ -19,7 +19,19 @@ final class ControlServer {
         return dir.appendingPathComponent("control.sock").path
     }
 
+    /// Path of the marker the MCP helper reads, so it can say "turned off" instead of "not running".
+    static var disabledMarker: URL {
+        URL(fileURLWithPath: socketPath).deletingLastPathComponent()
+            .appendingPathComponent("mcp.disabled")
+    }
+
     func start(store: ProfileStore, deck: DeckModel) {
+        guard AppSettings.shared.mcpEnabled else {
+            FileManager.default.createFile(atPath: Self.disabledMarker.path, contents: Data())
+            Log.write("control socket not started: MCP is disabled in Settings")
+            return
+        }
+        try? FileManager.default.removeItem(at: Self.disabledMarker)
         guard listener == nil else { return }
         self.store = store
         self.deck = deck
@@ -42,6 +54,15 @@ final class ControlServer {
         } catch {
             Log.write("control socket failed: \(error.localizedDescription)")
         }
+    }
+
+    /// Turn the control socket off: stop accepting and remove the socket file so nothing can connect.
+    func stop() {
+        listener?.cancel()
+        listener = nil
+        try? FileManager.default.removeItem(atPath: Self.socketPath)
+        FileManager.default.createFile(atPath: Self.disabledMarker.path, contents: Data())
+        Log.write("control socket stopped (MCP disabled)")
     }
 
     private func receive(_ conn: NWConnection, buffer: Data) {
