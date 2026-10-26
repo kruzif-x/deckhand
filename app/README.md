@@ -73,6 +73,9 @@ through its control socket (`~/Library/Application Support/Deckhand/control.sock
 
 ## Features
 
+* **Fast sync**: a push renders each slot, hashes the bytes and writes only what changed — a no-op
+  Send to Device is ~60 ms instead of ~600 ms. The write loop runs on its own queue, so a slow
+  transfer cannot stall the window. The cache resets on page change, profile switch and re-plug.
 * **Profiles** in the sidebar, each with up to 4 host-side pages and 18 slots per page.
   Selecting a profile only *edits* it; **Send to Device** (⇧⌘R) is what puts it on the panel — the
   sidebar marks the live profile "On device".
