@@ -1,5 +1,12 @@
 # Read-only probe of the Stream Dock (VID 0x5548 / PID 0x6674)
 
+> **Historical tooling.** These scripts were used to bring up the unit and to prove the protocol.
+> `deck.py` and `drive_test.py` import the vendor's Python SDK, which has been **deleted** from this
+> repository (it is not redistributable), so they only run if you supply that SDK yourself.
+> Everything they were used to discover is implemented in `app/Sources/Deckhand/NativeTransport.swift`
+> and documented in `docs/protocol-native.md`; `hidprobe.swift`, `hidreader.swift`, `hidraw.swift` and
+> the shell wrappers are stand-alone IOKit code and still build and run.
+
 `hidprobe.swift` opens the device through `IOHIDManager`, dumps every property macOS
 exposes, reads the vendor feature report, and listens for unsolicited input reports.
 It never writes an output or feature report — nothing on the device changes.
