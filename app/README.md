@@ -1,4 +1,4 @@
-# Deckhand — a native macOS driver and UI for the AJAZZ Stream Dock 293S
+# Deckhand 0.1b (beta) — a native macOS driver and UI for the AJAZZ Stream Dock 293S
 
 Deckhand replaces the vendor application (~1.4 GB Electron/CEF) with a ~2.4 MB native SwiftUI app that
 drives the panel over IOKit directly. No vendor binary is loaded, shipped or required — the HID protocol

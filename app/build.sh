@@ -30,7 +30,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundleExecutable</key><string>Deckhand</string>
     <key>CFBundleIdentifier</key><string>com.rolandchia.deckhand</string>
     <key>CFBundlePackageType</key><string>APPL</string>
-    <key>CFBundleShortVersionString</key><string>1.0</string>
+    <key>CFBundleShortVersionString</key><string>0.1b</string>
     <key>CFBundleVersion</key><string>1</string>
     <key>CFBundleDevelopmentRegion</key><string>en</string>
     <key>CFBundleLocalizations</key>
@@ -57,7 +57,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
             <key>CFBundleTypeRole</key><string>Editor</string>
         </dict>
     </array>
-    <key>NSHumanReadableCopyright</key><string>Independent implementation. No vendor code executed beyond the MIT-licensed HID transport.</string>
+    <key>NSHumanReadableCopyright</key><string>MIT © 2026 Roland Chia · beta 0.1b · independent implementation, no vendor code</string>
 </dict>
 </plist>
 PLIST
