@@ -1,7 +1,6 @@
 # build products
 app/.build/
 app/*.app/
-**/*.dylib
 
 # local build/run output
 **/__pycache__/
