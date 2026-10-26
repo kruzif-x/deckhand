@@ -1,0 +1,36 @@
+# build products
+app/.build/
+app/Deckhand.app/
+app/*.app/
+**/*.dylib
+
+# superseded PySide6 prototype (python venv + experiment output) — not part of Deckhand
+qt/
+
+# vendor SDK and the recovered-from artifacts — reference only, never redistributed
+device/sdk/
+device/sdk/src/StreamDock/Transport/TransportDLL/
+
+# local tooling output
+device/logs/
+re/*.log
+re/harness
+re/vendor_ref
+re/hidspy.dylib
+re/hidspy2.dylib
+qt/__pycache__/
+**/__pycache__/
+
+# macOS / editor noise
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# captured logs / evidence from bring-up
+device/logs/*.jsonl
+device/logs/*.pid
+*.pkg
+
+# python venv from bring-up tooling
+device/.venv/
