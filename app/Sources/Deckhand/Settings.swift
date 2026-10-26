@@ -102,7 +102,8 @@ struct SettingsView: View {
                     }
                 }
             } footer: {
-                Text("Defaults live in \(AppSettings.defaultRoot.path). Profiles already open stay where they are — this only changes where new files go.")
+                Text("Defaults live in \(AppSettings.defaultRoot.path). Profiles already open stay where they are — this only changes where new files go.\n\nDeckhand \(AppInfo.version) — beta. MIT licensed.")
+                    .fixedSize(horizontal: false, vertical: true)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

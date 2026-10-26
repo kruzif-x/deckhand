@@ -1,4 +1,4 @@
-# Deckhand
+# Deckhand 0.1b (beta)
 
 A native macOS driver and UI for the AJAZZ Stream Dock 293S (VID `0x5548`, PID `0x6674`).
 
@@ -58,6 +58,15 @@ each is documented so it isn't rediscovered.
 
 macOS 14+, Xcode command line tools, arm64. While Deckhand runs it owns the HID device; other tools
 should use its control socket (`~/Library/Application Support/Deckhand/control.sock`) or the MCP server.
+
+## Icon and built-in graphics
+
+Both are generated from code, so the assets are original and reproducible:
+
+    python3 tools/make_icon.py app/Resources/AppIcon.icns cyan     # squircle keypad + 1×3 display strip
+    python3 tools/make_library.py app/Resources/Library             # 78 key graphics
+
+`make_icon.py` takes `cyan`, `mint` or `indigo` as the accent.
 
 ## Licence
 
