@@ -58,7 +58,7 @@ Tracked as issues, in dependency order — each one needs the previous:
 | 3 | improve the firmware and publish it: no wedge on bad writes, on-device pages, real window surface | [#3](https://github.com/kruzif-x/deckhand/issues/3) |
 | 4 | let Deckhand flash firmware itself — verify, back up, recover | [#4](https://github.com/kruzif-x/deckhand/issues/4) |
 
-Steps 1–2 are reverse engineering on hardware we own; step 3 is where the project stops describing
+Steps 1–2 are reverse engineering on hardware I own; step 3 is where the project stops describing
 someone else's device and starts shipping its own.
 
 ## How the protocol was recovered
