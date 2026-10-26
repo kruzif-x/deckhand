@@ -4,7 +4,7 @@
 // every tool call over the app's Unix control socket and returns the JSON reply as MCP content.
 //
 // Register with any MCP client:
-//   command: /Users/rolandchia/Downloads/streamdock-reverse/app/Deckhand.app/Contents/MacOS/streamdock-mcp
+//   command: <repo>/app/Deckhand.app/Contents/MacOS/deckhand-mcp
 import Foundation
 
 let socketPath: String = {
