@@ -79,8 +79,14 @@ struct HelpView: View {
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
                     HStack(spacing: 12) {
-                        Text(row.0).monospaced().frame(width: 110, alignment: .leading)
-                        Text(row.1).foregroundStyle(.secondary)
+                        Text(row.0)
+                            .monospaced()
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .frame(width: 170, alignment: .leading)
+                        Text(row.1)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
             }
@@ -154,6 +160,25 @@ enum HelpContent {
                 "While it is on, the socket is ~/Library/Application Support/Deckhand/control.sock and speaks newline-delimited JSON, e.g. {\"cmd\":\"status\"}.",
             ]),
             .note("The socket is local to this Mac and reachable only by your user account. It is never opened to the network."),
+
+            .heading("Tools the MCP server exposes"),
+            .text("Thirteen tools, all of which act on the profile marked On device:"),
+            .keys([
+                ("deck_status", "connection, firmware, active profile, page count"),
+                ("list_pages", "pages of the open profile and which is active"),
+                ("set_page", "switch page by index (0-based) and push its images"),
+                ("add_page", "add an empty page, up to 4"),
+                ("remove_page", "delete a page by index; the last one cannot go"),
+                ("set_key_image", "draw an image file on a key (1–15) or window pane (16–18)"),
+                ("set_key_action", "bind a key: hotkey, open app, URL, script, mute, volume, page nav"),
+                ("press_key", "run the action bound to a key, as if pressed"),
+                ("set_window_mode", "1×3 window as one strip (span) or three panes"),
+                ("set_widget", "clock, date, CPU, memory, page number or text in a pane"),
+                ("send_to_device", "push every image of the active page"),
+                ("clear_device", "blank every key on the panel"),
+                ("set_brightness", "backlight, 0–100"),
+            ]),
+            .text("Each tool takes a flat JSON object; set_key_action uses target for the app path, URL or command, and keyCode + modifiers for a shortcut."),
         ]),
 
         HelpTopic(title: "Menu bar and login", symbol: "menubar.rectangle", body: [

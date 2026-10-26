@@ -114,7 +114,7 @@ let tools: [Tool] = [
                   ],
                   "required": ["slot", "path"]]),
     Tool(name: "set_key_action",
-         description: "Bind a key. kinds: none, hotkey, text, openApp, openURL, shell. For hotkey give keyCode (macOS virtual key) and modifiers (NSEvent flags: cmd 1048576, shift 131072, opt 524288, ctrl 262144).",
+         description: "Bind a key. kinds: none, hotkey, openApp, openURL, shell, mute, volumeUp, volumeDown, pageNext, pagePrevious, pageHome. For hotkey give keyCode (macOS virtual key) and modifiers (NSEvent flags: cmd 1048576, shift 131072, opt 524288, ctrl 262144).",
          schema: ["type": "object",
                   "properties": [
                     "slot": ["type": "integer", "minimum": 1, "maximum": 18],
