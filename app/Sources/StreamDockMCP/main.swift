@@ -111,7 +111,7 @@ let tools: [Tool] = [
          schema: ["type": "object",
                   "properties": [
                     "slot": ["type": "integer", "minimum": 1, "maximum": 18],
-                    "kind": ["type": "string", "enum": ["none", "hotkey", "openApp", "openURL", "shell", "pageNext", "pagePrevious", "pageHome"]],
+                    "kind": ["type": "string", "enum": ["none", "hotkey", "openApp", "openURL", "shell", "mute", "volumeUp", "volumeDown", "pageNext", "pagePrevious", "pageHome"]],
                     "keyCode": ["type": "integer"],
                     "modifiers": ["type": "integer"],
                     "text": ["type": "string"],

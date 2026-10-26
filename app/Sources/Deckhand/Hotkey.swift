@@ -158,6 +158,23 @@ enum HotkeyEngine {
         do { try process.run() } catch { Log.write("script failed to start: \(error.localizedDescription)") }
     }
 
+    /// Post a system-defined media key (volume up/down, mute). These are the same events the F11/F12
+    /// keys generate, so no Accessibility translation is needed beyond the normal key-event grant.
+    static func systemKey(_ code: Int) {
+        func post(_ down: Bool) {
+            let flags = down ? 0xA00 : 0xB00
+            let data1 = (code << 16) | flags
+            if let event = NSEvent.otherEvent(with: .systemDefined, location: .zero,
+                                              modifierFlags: [], timestamp: 0, windowNumber: 0,
+                                              context: nil, subtype: 8, data1: data1, data2: -1) {
+                event.cgEvent?.post(tap: .cghidEventTap)
+            }
+        }
+        post(true)
+        usleep(20_000)
+        post(false)
+    }
+
     static func run(_ action: KeyAction) {
         if action.kind == .hotkey, !isTrusted {
             Log.write("blocked: no Accessibility permission for synthetic keystrokes")
@@ -178,6 +195,12 @@ enum HotkeyEngine {
             }
         case .openURL:
             if let url = URL(string: action.target) { NSWorkspace.shared.open(url) }
+        case .mute:
+            systemKey(7)                  // NX_KEYTYPE_MUTE
+        case .volumeUp:
+            systemKey(0)                  // NX_KEYTYPE_SOUND_UP
+        case .volumeDown:
+            systemKey(1)                  // NX_KEYTYPE_SOUND_DOWN
         case .page, .pageNext, .pagePrevious, .pageHome:
             break          // handled by DeckModel, which owns the profile store
         case .shell:

@@ -109,7 +109,7 @@ struct InspectorView: View {
                         case .openURL:
                             TextField("URL", text: slotBinding(index, \.action.target),
                                       prompt: Text("https://example.com"))
-                        case .pageNext, .pagePrevious, .pageHome:
+                        case .mute, .volumeUp, .volumeDown, .pageNext, .pagePrevious, .pageHome:
                             Text(current.action.kind.kindExplanation)
                                 .font(.callout)
                                 .foregroundStyle(.secondary)

@@ -202,7 +202,13 @@ struct ContentView: View {
     @State private var pendingSlot: Int?
     @State private var editing: EditTarget?
     @State private var picking: PickTarget?
+    @State private var libraryTarget: LibraryTarget?
     @State private var widgetCache: [Int: Data] = [:]
+
+    struct LibraryTarget: Identifiable {
+        let id = UUID()
+        let slot: Int
+    }
 
     struct PickTarget: Identifiable {
         let id = UUID()
@@ -257,6 +263,17 @@ struct ContentView: View {
             Button("Cancel", role: .cancel) { picking = nil }
         } message: { pick in
             Text("Fitted to \(ImagePrep.size(for: pick.slot))×\(ImagePrep.size(for: pick.slot)) on the key. Adjust it first, or use it unchanged.")
+        }
+        .sheet(item: $libraryTarget) { target in
+            LibraryPickerView(title: "Choose a graphic for key \(target.slot)",
+                              onPick: { url in
+                                  libraryTarget = nil
+                                  // the confirmation dialog must not race the sheet's dismissal
+                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                                      importImageAt(url, slot: target.slot)
+                                  }
+                              },
+                              onCancel: { libraryTarget = nil })
         }
         .sheet(item: $editing) { target in
             ImageEditorSheet(source: target.image, slot: target.slot,
@@ -538,8 +555,9 @@ struct ContentView: View {
         }
     }
 
+    /// "Choose Image" shows the library (built-in graphics + whatever the user imported).
     private func chooseImage(for slot: Int) {
-        pickImages(slot: slot)
+        libraryTarget = LibraryTarget(slot: slot)
     }
 
     /// Single image for one key, starting in the configured graphics folder.
@@ -557,6 +575,20 @@ struct ContentView: View {
 
 
     /// Bulk import: pick several files from the configured graphics folder.
+    /// File ▸ Import Images to Library… — copies files into the library, then opens the picker if a
+    /// key was waiting for a graphic.
+    private func importToLibrary() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.image]
+        panel.allowsMultipleSelection = true
+        panel.canChooseDirectories = false
+        panel.directoryURL = AppSettings.shared.graphicsURL
+        panel.message = "Choose images to add to the Deckhand library"
+        guard panel.runModal() == .OK else { return }
+        let added = ImageLibrary.shared.importImages(panel.urls)
+        Log.write("library: \(added) image(s) imported")
+    }
+
     private func pickMany() {
         let panel = NSOpenPanel()
         panel.directoryURL = AppSettings.shared.graphicsURL

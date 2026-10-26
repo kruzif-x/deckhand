@@ -16,6 +16,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Framewor
 cp "$BIN" "$APP/Contents/MacOS/Deckhand"
 cp ".build/release/StreamDockMCP" "$APP/Contents/MacOS/deckhand-mcp"
 if [ -f "Resources/AppIcon.icns" ]; then cp "Resources/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"; fi
+if [ -d "Resources/Library" ]; then cp -R "Resources/Library" "$APP/Contents/Resources/Library"; fi
 
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

@@ -92,6 +92,11 @@ struct DeckhandApp: App {
                 }
                 .keyboardShortcut("s", modifiers: [.command, .shift])
 
+                Button("Import Images to Library…") {
+                    NotificationCenter.default.post(name: .init("deck.importLibrary"), object: nil)
+                }
+                .keyboardShortcut("i", modifiers: [.command, .shift])
+
                 Button("Duplicate Profile") {
                     NotificationCenter.default.post(name: .init("deck.duplicateProfile"), object: nil)
                 }
