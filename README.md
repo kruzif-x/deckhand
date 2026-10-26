@@ -4,7 +4,7 @@ Made this for my own use, but decided to release this usable beta as opensource.
 
 I used Hermes Agent (https://hermes-agent.nousresearch.com), REA: Reverse Engineer Anything (https://github.com/morluto/rea), and Orcarouter.Ai Deepseek-v4.1-flash-1017 (https://www.orcarouter.ai), and 8 hours of my time to get this first working beta.
 
-This MacOS app was coded in Swift for the AJAZZ Stream Dock AKP153. You can build from source, or can used by notarized dmg release.
+This MacOS app was coded in Swift for the AJAZZ Stream Dock AKP153. You can build from source, or install the notarised DMG from the [release](../../releases) — see [Install](#install).
 
 The vendor application is ~1.4 GB of Electron/CEF. Deckhand is 2.4 MB of Swift that talks to the panel
 over IOKit, with no vendor binary loaded, shipped or required — the HID protocol was recovered by static
@@ -20,6 +20,36 @@ The original Driver/App is at https://ajazz.key123.vip/mac
 | the hardware | the app |
 |---|---|
 | ![Stream Dock 293S](docs/images/hardware.jpg) | ![Deckhand](docs/images/app.jpg) |
+
+## Install
+
+**[Download Deckhand-0.1b.dmg](https://github.com/kruzif-x/deckhand/releases/download/v0.1b/Deckhand-0.1b.dmg)** — 1.2 MB, macOS 14+ on Apple silicon.
+
+The DMG is **notarised by Apple** and signed with a Developer ID certificate, with the notarisation ticket
+stapled to the disk image. That means macOS opens it normally: no "unidentified developer" warning, no
+right-click ▸ Open, no `xattr -d com.apple.quarantine`. Drag Deckhand to Applications and launch it.
+
+Verified before publishing:
+
+```
+submission     Apple notary service · status Accepted
+spctl (DMG)    accepted · source=Notarized Developer ID
+spctl (app)    accepted · Notarized Developer ID · Developer ID Application: Roland Chia (S6TR6PN5VQ)
+stapler        ticket stapled and validated
+```
+
+If you'd rather check it yourself:
+
+```
+shasum -a 256 Deckhand-0.1b.dmg
+# b022d9597caf2be8a93550f488854a753be6bdecde0542a2221e13a2f636026b
+
+spctl -a -t open --context context:primary-signature -v Deckhand-0.1b.dmg
+# Deckhand-0.1b.dmg: accepted
+# source=Notarized Developer ID
+```
+
+Building from source instead gives you an unsigned or locally signed copy — see [Build](#build).
 
 ## What it does
 
