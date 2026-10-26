@@ -20,6 +20,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var store: ProfileStore?
     var saveHandler: (() -> Void)?
 
+    /// Clicking the Dock icon (or `open -a Deckhand`) while no window is visible reopens the scene.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag { WindowBridge.shared.show() }
+        return true
+    }
+
     /// Closing the window must not kill the panel: the process keeps the HID handle open and the
     /// menu-bar item is how you get the window back. Turning the menu bar off restores quit-on-close.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -60,7 +66,7 @@ struct DeckhandApp: App {
     @StateObject private var deck = DeckModel()
 
     var body: some Scene {
-        WindowGroup("Deckhand") {
+        WindowGroup("Deckhand", id: "main") {
             ContentView()
                 .environmentObject(store)
                 .environmentObject(deck)

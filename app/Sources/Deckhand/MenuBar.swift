@@ -65,12 +65,7 @@ final class MenuBarController {
     // MARK: menu actions
 
     @objc private func showWindow() {
-        NSApp.activate(ignoringOtherApps: true)
-        if let window = NSApp.windows.first(where: { $0.canBecomeMain }) {
-            window.makeKeyAndOrderFront(nil)
-        } else {
-            NotificationCenter.default.post(name: .init("deck.showWindow"), object: nil)
-        }
+        WindowBridge.shared.show()
     }
 
     @objc private func sendToDevice() {
