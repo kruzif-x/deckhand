@@ -1,10 +1,16 @@
 # Deckhand 0.1b (beta)
 
-A native macOS driver and UI for the AJAZZ Stream Dock 293S (VID `0x5548`, PID `0x6674`).
+Made this for my own use, but decided to release this usable beta as opensource.
+
+I used Hermes Agent (https://hermes-agent.nousresearch.com), REA: Reverse Engineer Anything (https://github.com/morluto/rea), and Orcarouter.Ai Deepseek-v4.1-flash-1017 (https://www.orcarouter.ai), and 8 hours of my time to get this first working beta.
+
+This MacOS app was coded in Swift for the AJAZZ Stream Dock AKP153. You can build from source, or can used by notarized dmg release.
 
 The vendor application is ~1.4 GB of Electron/CEF. Deckhand is 2.4 MB of Swift that talks to the panel
 over IOKit, with no vendor binary loaded, shipped or required — the HID protocol was recovered by static
 analysis of the vendor library and then verified against the hardware, byte for byte.
+
+The original Driver/App is at https://ajazz.key123.vip/mac 
 
     app/          the macOS app (SwiftPM) + MCP server     → app/README.md
     docs/         the recovered wire protocol
@@ -22,7 +28,7 @@ analysis of the vendor library and then verified against the hardware, byte for 
 * bindings: key combination, open app, open URL, run script, page next / previous / first
 * window panes render clock, date, CPU, memory, page number or custom text
 * profiles saved as `.sdprofile`, **Save / Save As**, storage folders configurable in Settings
-* follows the system language (English, 简体中文, Bahasa Melayu)
+* follows the system language (Default is English)
 * MCP server so an agent can drive it through the app's control socket
 
 ![The image library](docs/images/library.jpg)
