@@ -203,6 +203,7 @@ struct ContentView: View {
     @State private var editing: EditTarget?
     @State private var picking: PickTarget?
     @State private var libraryTarget: LibraryTarget?
+    @Environment(\.openWindow) private var openWindow
     @State private var widgetCache: [Int: Data] = [:]
 
     struct LibraryTarget: Identifiable {
@@ -286,6 +287,7 @@ struct ContentView: View {
         .onAppear {
             deck.store = store
             ControlServer.shared.start(store: store, deck: deck)
+            WindowBridge.shared.openMainWindow = { openWindow(id: "main") }
             MenuBarController.shared.start(deck: deck, store: store)
             deck.onWidgetTick = { [self] in tickWidgets() }
             // headless UI review hook: open the editor on launch with a sample image
