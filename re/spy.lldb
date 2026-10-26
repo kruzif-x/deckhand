@@ -1,5 +1,0 @@
-# lldb driver: log every IOHIDDeviceSetReport the vendor library makes, then leave it running.
-br set -n IOHIDDeviceSetReport
-br command add 1 -o "printf \"--- setreport type=%d id=%lu len=%lu\n\", $x1, $x2, $x4" -o "memory read -f x -c 24 $x3" -o "continue"
-run /tmp/t_purple.jpg 14
-quit

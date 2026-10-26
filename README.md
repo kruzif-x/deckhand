@@ -7,11 +7,9 @@ over IOKit, with no vendor binary loaded, shipped or required — the HID protoc
 analysis of the vendor library and then verified against the hardware, byte for byte.
 
     app/          the macOS app (SwiftPM) + MCP server     → app/README.md
-    docs/         recovered protocol, plugin protocol, UI review
-    device/       bring-up tooling used to probe the unit (Python/Swift, no vendor code)
-    re/           analysis harnesses: vendor A/B reference driver, lldb report-capture script
-    sdk/ harness/ examples/   a separate, smaller result: the vendor's plugin protocol,
-                              reconstructed (RFC6455 client/server, mock host, sample plugin)
+    docs/         the recovered wire protocol
+    LICENSE       MIT
+    README.md     this file
 
 ## What it does
 
