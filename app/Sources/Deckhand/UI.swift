@@ -286,6 +286,7 @@ struct ContentView: View {
         .onAppear {
             deck.store = store
             ControlServer.shared.start(store: store, deck: deck)
+            MenuBarController.shared.start(deck: deck, store: store)
             deck.onWidgetTick = { [self] in tickWidgets() }
             // headless UI review hook: open the editor on launch with a sample image
             if let demo = ProcessInfo.processInfo.environment["STREAMDOCK_EDITOR_DEMO"],

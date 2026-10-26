@@ -85,6 +85,10 @@ through its control socket (`~/Library/Application Support/Deckhand/control.sock
   executable), and page navigation (next / previous / first) as first-class actions.
 * **The 1×3 window** is host-rendered: clock, date, CPU, memory, page number or custom text, drawn per
   pane and pushed when the picture changes.
+* **Runs in the menu bar**: closing the window hides it instead of quitting, so the panel keeps working
+  with no window open. The status item shows connection state and offers Open / Send to Device / Next–
+  Previous page / Quit. Settings has "Keep running in the menu bar" (on by default) and "Open Deckhand
+  at login" (SMAppService).
 * **Settings (⌘,)** choose where profiles and graphics live, defaulting to `~/Documents/Deckhand`.
 * **Localisation** follows the system language — English, Simplified Chinese, Bahasa Melayu.
 

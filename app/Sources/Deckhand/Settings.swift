@@ -1,12 +1,16 @@
 // Settings.swift — where the app keeps things on disk, and the preferences window that controls it.
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 final class AppSettings: ObservableObject {
     static let shared = AppSettings()
 
     /// Folder name under ~/Documents. Change this one constant when the project is renamed.
     static let appName = "Deckhand"
+
+    /// Keeps the process (and therefore the panel) alive when the window is closed, with a status item.
+    @Published var menuBarEnabled: Bool { didSet { defaults.set(menuBarEnabled, forKey: "menuBarEnabled") } }
 
     @Published var profilesFolder: String { didSet { defaults.set(profilesFolder, forKey: "profilesFolder") } }
     @Published var graphicsFolder: String { didSet { defaults.set(graphicsFolder, forKey: "graphicsFolder") } }
@@ -21,6 +25,7 @@ final class AppSettings: ObservableObject {
     static var defaultGraphicsPath: String { defaultRoot.appendingPathComponent("Graphics").path }
 
     init() {
+        menuBarEnabled = defaults.object(forKey: "menuBarEnabled") as? Bool ?? true
         profilesFolder = defaults.string(forKey: "profilesFolder") ?? Self.defaultProfilesPath
         graphicsFolder = defaults.string(forKey: "graphicsFolder") ?? Self.defaultGraphicsPath
         createFolders()
@@ -49,9 +54,34 @@ final class AppSettings: ObservableObject {
 struct SettingsView: View {
     @ObservedObject var settings = AppSettings.shared
     @State private var error: String?
+    @State private var loginTick = 0        // re-reads SMAppService after a change
 
     var body: some View {
         Form {
+            Section("General") {
+                Toggle("Keep running in the menu bar when the window is closed",
+                       isOn: $settings.menuBarEnabled)
+                Text("The panel keeps working with no window open; the menu-bar icon brings Deckhand back.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Toggle(isOn: Binding(
+                    get: { SMAppService.mainApp.status == .enabled },
+                    set: { wanted in
+                        do {
+                            if wanted { try SMAppService.mainApp.register() }
+                            else { try SMAppService.mainApp.unregister() }
+                            Log.write("launch at login \(wanted ? "enabled" : "disabled")")
+                        } catch {
+                            Log.write("launch at login failed: \(error.localizedDescription)")
+                        }
+                        loginTick += 1
+                    })) {
+                    Text("Open Deckhand at login")
+                }
+                .id(loginTick)
+            }
+
             Section(t("Storage")) {
                 folderRow(title: "Profiles",
                           caption: "Where Save and Save As put .sdprofile files.",
@@ -78,7 +108,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 560, height: 330)
+        .frame(width: 560, height: 470)
         .alert("Folder problem", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) {
             Button("OK") { error = nil }
         } message: {
