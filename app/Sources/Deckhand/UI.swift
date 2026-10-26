@@ -22,6 +22,8 @@ final class DeckModel: ObservableObject {
     init() {
         device.onConnectionChange = { [weak self] ok in
             guard let self else { return }
+            self.connectionEpoch += 1        // panel content is unknown after a re-plug
+            self.sentDigests.removeAll()
             self.connected = ok
             if ok {
                 self.firmware = self.device.firmware
@@ -61,33 +63,86 @@ final class DeckModel: ObservableObject {
 
     func reconnect() { device.connectIfPossible() }
 
-    /// Push every slot of the profile to the panel.
-    func send(_ profile: Profile, images: [(Int, URL)]) {
+    // MARK: pushing to the panel
+    //
+    // Two things matter here: only slots whose rendered bytes changed are written (a full 18-slot
+    // resend is ~0.6 s of USB traffic for nothing), and the whole loop runs off the main thread so a
+    // slow transfer can never stall the window.
+    private let sendQueue = DispatchQueue(label: "deckhand.send", qos: .userInitiated)
+    private var sentDigests: [Int: UInt64] = [:]
+    private var sentContext = ""
+    /// Bumped on every connect/disconnect: the panel's content is unknown after a re-plug.
+    private var connectionEpoch = 0
+
+    private static func digest(_ data: Data) -> UInt64 {
+        var hash: UInt64 = 0xcbf29ce484222325        // FNV-1a, 64-bit
+        for byte in data {
+            hash ^= UInt64(byte)
+            hash = hash &* 0x100000001b3
+        }
+        return hash
+    }
+
+    /// Push the profile to the panel. Unchanged slots are skipped unless `force` is set; the cache is
+    /// invalidated whenever the profile, the page or the device connection changes.
+    func send(_ profile: Profile, images: [(Int, URL)], force requestedForce: Bool = false) {
         guard connected else { sendState = .failed("No device"); return }
+
+        var force = requestedForce
+        let context = "\(profile.id.uuidString)|\(profile.activePage)|\(connectionEpoch)"
+        if context != sentContext {
+            sentDigests.removeAll()
+            sentContext = context
+            force = true          // new page/profile/connection: the panel must be repainted
+        }
+
         sendState = .sending
-        device.prepareForWrite()
-        var count = 0
-        var blanked = 0
-        for slot in profile.slots {
-            guard let entry = images.first(where: { $0.0 == slot.id }) else {
-                // empty slot on this page: paint it black, otherwise the panel keeps showing
-                // whatever the previous page left there
-                // keys always blank; panes only when they have no widget to draw
-                if !slot.isWindow || slot.widget == nil,
-                   let blank = blankKeyImage(slot: slot.id) {
-                    _ = device.setImage(slot: slot.id, jpeg: blank)
-                    blanked += 1
+        let snapshot = profile
+        let list = images
+        let known = sentDigests
+
+        sendQueue.async { [weak self] in
+            guard let self else { return }
+            self.device.prepareForWrite()
+
+            var digests = known
+            var written = 0, blanked = 0, skipped = 0, failed = 0
+
+            for slot in snapshot.slots {
+                let isPicture = list.contains { $0.0 == slot.id }
+                let payload: Data?
+                if let entry = list.first(where: { $0.0 == slot.id }) {
+                    payload = ImagePrep.prepare(url: entry.1, side: ImagePrep.size(for: slot.id))
+                } else if !slot.isWindow || slot.widget == nil {
+                    // empty slot on this page: paint it black, or the panel keeps showing whatever
+                    // the previous page left there
+                    payload = self.blankKeyImage(slot: slot.id)
+                } else {
+                    payload = nil
                 }
-                continue
+                guard let payload else { continue }
+
+                let sum = Self.digest(payload)
+                if !force, digests[slot.id] == sum { skipped += 1; continue }
+
+                if self.device.setImage(slot: slot.id, jpeg: payload) {
+                    digests[slot.id] = sum
+                    if isPicture { written += 1 } else { blanked += 1 }
+                } else {
+                    failed += 1
+                }
             }
-            if let data = ImagePrep.prepare(url: entry.1, side: ImagePrep.size(for: slot.id)),
-               device.setImage(slot: slot.id, jpeg: data) {
-                count += 1
+
+            self.device.refresh()
+
+            DispatchQueue.main.async {
+                self.sentDigests = digests
+                self.sendState = failed > 0 ? .failed("\(failed) key(s) rejected") : .sent(written)
+                Log.write("synced \(written) images, blanked \(blanked), skipped \(skipped) unchanged"
+                          + (failed > 0 ? ", \(failed) failed" : "")
+                          + " · profile \(snapshot.name) page \(snapshot.activePage + 1)")
             }
         }
-        device.refresh()
-        sendState = .sent(count)
-        Log.write("synced \(count) images, blanked \(blanked) empty slots · profile \(profile.name) page \(profile.activePage + 1)")
     }
 
     func sendSingle(slot: Int, data: Data, quiet: Bool = false) {
