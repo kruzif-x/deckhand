@@ -5,6 +5,7 @@ import CoreGraphics
 
 enum ActionKind: String, Codable, CaseIterable, Identifiable {
     case none, hotkey, text, openApp, openURL, shell
+    case mute, volumeUp, volumeDown
     case pageNext, pagePrevious, pageHome
     case page                     // legacy single action with a target; kept only for old files
     var id: String { rawValue }
@@ -17,6 +18,9 @@ enum ActionKind: String, Codable, CaseIterable, Identifiable {
     /// The three page buttons are one family: they share dispatch and only differ by direction.
     var kindExplanation: String {
         switch self {
+        case .mute: t("Sends the system mute key to the focused app.")
+        case .volumeUp: t("Sends the system volume-up key.")
+        case .volumeDown: t("Sends the system volume-down key.")
         case .pageNext: t("Moves to the next page; after the last page it wraps to the first.")
         case .pagePrevious: t("Moves to the previous page; from the first page it wraps to the last.")
         case .pageHome: t("Always jumps back to page 1, whatever page you are on.")
@@ -42,6 +46,9 @@ enum ActionKind: String, Codable, CaseIterable, Identifiable {
         case .openApp: t("Open app")
         case .openURL: t("Open URL")
         case .shell: t("Run script")
+        case .mute: t("Mute")
+        case .volumeUp: t("Volume up")
+        case .volumeDown: t("Volume down")
         case .pageNext: t("Next page")
         case .pagePrevious: t("Previous page")
         case .pageHome: t("First page")
@@ -57,6 +64,9 @@ enum ActionKind: String, Codable, CaseIterable, Identifiable {
         case .openApp: "app.badge"
         case .openURL: "link"
         case .shell: "terminal"
+        case .mute: "speaker.slash"
+        case .volumeUp: "speaker.wave.3"
+        case .volumeDown: "speaker.wave.1"
         case .pageNext: "chevron.right.square"
         case .pagePrevious: "chevron.left.square"
         case .pageHome: "house"
@@ -90,6 +100,9 @@ case .hotkey: HotkeyFormatter.describe(keyCode: keyCode, flags: NSEvent.Modifier
 case .openApp: (target as NSString).lastPathComponent.isEmpty ? "—" : (target as NSString).lastPathComponent
         case .openURL: target
         case .shell: t("script")
+        case .mute: t("Mute")
+        case .volumeUp: t("Volume up")
+        case .volumeDown: t("Volume down")
 case .pageNext: t("Go to the next page")
 case .pagePrevious: t("Go to the previous page")
 case .pageHome: t("Go to the first page")
