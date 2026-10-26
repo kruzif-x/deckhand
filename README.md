@@ -1,4 +1,4 @@
-# Deckhand 0.1b (beta)
+# Deckhand 0.1b (beta) for AJAZZ Stream Dock AKP153 (MacOS Only)
 
 Made this for my own use, but decided to release this usable beta as opensource.
 
