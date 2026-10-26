@@ -1,4 +1,4 @@
-// main.swift — streamdock-mcp: a stdio MCP server for StreamDockLite.
+// main.swift — deckhand-mcp: a stdio MCP server for Deckhand.
 //
 // It does not touch USB itself. The app owns the panel exclusively, so this server forwards
 // every tool call over the app's Unix control socket and returns the JSON reply as MCP content.
@@ -218,7 +218,7 @@ while let line = readLine(strippingNewline: true) {
         respond(id: id, result: [
             "protocolVersion": "2024-11-05",
             "capabilities": ["tools": [String: Any]()],
-            "serverInfo": ["name": "streamdock-mcp", "version": "1.0.0"],
+            "serverInfo": ["name": "deckhand-mcp", "version": "0.1b"],
         ])
 
     case "notifications/initialized", "initialized":

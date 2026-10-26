@@ -20,7 +20,7 @@ was recovered by static analysis and verified against the hardware.
       build.sh                    assembles and signs Deckhand.app (arm64)
     Sources/StreamDockMCP/        stdio MCP server that drives the app over its socket
     docs/protocol-native.md       the recovered wire protocol, with sources
-    device/, re/                  bring-up tooling and the vendor A/B reference harness
+    tools/                        generators for the icon and the built-in graphics
 
 ## Status — proven on hardware
 
@@ -98,6 +98,6 @@ through its control socket (`~/Library/Application Support/Deckhand/control.sock
 
 ## Licence
 
-MIT for this code. The vendor's SDK (`device/sdk/`, `TransportDLL/libtransport.dylib`) is **not** part of
-the release — it was used as a reference oracle during development and is excluded by `.gitignore`. The
-protocol was reimplemented from observation and static analysis; no vendor code is linked or copied.
+MIT for this code. No vendor code is included: the vendored SDK used as a reference oracle during
+development was deleted from the tree, and the protocol was reimplemented from observation and static
+analysis. Nothing vendor-owned is linked, copied or redistributed.
