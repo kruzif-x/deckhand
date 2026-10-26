@@ -1,0 +1,38 @@
+IOHIDManagerOpen -> 0
+=== device ===
+  VendorID                   21832
+  ProductID                  26228
+  VersionNumber              768
+  Transport                  USB
+  LocationID                 34603008
+  PrimaryUsagePage           65440
+  PrimaryUsage               1
+  MaxInputReportSize         512
+  MaxOutputReportSize        512
+  MaxFeatureReportSize       0
+  ReportInterval             125
+  reportDescriptor           06 a0 ff 09 01 a1 01 09 02 a1 00 06 a1 ff 09 03 09 04 15 80 25 7f 35 00 45 ff 75 08 96 00 02 81 02 09 05 09 06 15 80 25 7f 35 00 45 ff 75 08 96 00 02 91 02 c0 c0
+  IOHIDDeviceOpen -> 0
+  featureReport(id: 0) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 1) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 2) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 3) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 4) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 5) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 6) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  featureReport(id: 7) -> ok, len=13: 56 32 2e 32 39 33 2e 30 30 2e 30 30 31
+      as ascii: V2.293.00.001
+  listening for input reports for 90s …
+  report[512] 00 00 00 00 00 00 00 00 00 0d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 … (512 bytes)
+  report[512] 00 00 00 00 00 00 00 00 00 0d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 … (512 bytes)
+  report[512] 00 00 00 00 00 00 00 00 00 0d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 … (512 bytes)
+  report[512] 00 00 00 00 00 00 00 00 00 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 … (512 bytes)
+  report[512] 00 00 00 00 00 00 00 00 00 05 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 … (512 bytes)
+exit=143
