@@ -29,9 +29,11 @@ was recovered by static analysis and verified against the hardware.
 | display: all 18 slots, images and window widgets | verified |
 | physical key presses (15 keys, 350 ms debounce) | verified |
 | bindings: open app, hotkey chord, URL, script, page next/prev/first | verified by pressing keys |
+| two different apps launched from two keys | verified |
 | pages (host-side; 4 is a product cap, not a firmware limit) | verified |
 | brightness · wake · commit · heartbeat | implemented from the decompile, exercised indirectly |
-| hot-plug (unplug → "Not connected", replug → reconnect) | wired, not yet deliberately tested |
+| hot-plug (unplug → "Not connected", replug → reconnect) | verified |
+| clearing a key then Send to Device blanks it on the panel | verified |
 
 ## Protocol
 
