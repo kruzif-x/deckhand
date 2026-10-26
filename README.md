@@ -11,7 +11,9 @@ analysis of the vendor library and then verified against the hardware, byte for 
     LICENSE       MIT
     README.md     this file
 
-![Deckhand main window](docs/images/main.jpg)
+| the hardware | the app |
+|---|---|
+| ![Stream Dock 293S](docs/images/hardware.jpg) | ![Deckhand](docs/images/app.jpg) |
 
 ## What it does
 
