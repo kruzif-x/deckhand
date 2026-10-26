@@ -89,7 +89,11 @@ through its control socket (`~/Library/Application Support/Deckhand/control.sock
   with no window open. The status item shows connection state and offers Open / Send to Device / Next–
   Previous page / Quit. Settings has "Keep running in the menu bar" (on by default) and "Open Deckhand
   at login" (SMAppService).
-* **Settings (⌘,)** choose where profiles and graphics live, defaulting to `~/Documents/Deckhand`.
+* **Settings (⌘,)** choose where profiles and graphics live (default `~/Documents/Deckhand`), allow or
+  block MCP control (the local socket), keep the menu-bar item, and open at login.
+* **Help ▸ Deckhand Help (⌘?)** eight topics: getting started, keys and actions, profiles and pages,
+  graphics and the library, the 1×3 window, MCP and automation, menu bar and login, shortcuts,
+  troubleshooting.
 * **Localisation** follows the system language — English, Simplified Chinese, Bahasa Melayu.
 
 ## Licence

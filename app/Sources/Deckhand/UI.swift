@@ -204,6 +204,7 @@ struct ContentView: View {
     @State private var picking: PickTarget?
     @State private var libraryTarget: LibraryTarget?
     @Environment(\.openWindow) private var openWindow
+    @ObservedObject private var settings = AppSettings.shared
     @State private var widgetCache: [Int: Data] = [:]
 
     struct LibraryTarget: Identifiable {
@@ -286,8 +287,10 @@ struct ContentView: View {
         }
         .onAppear {
             deck.store = store
-            ControlServer.shared.start(store: store, deck: deck)
+            if settings.mcpEnabled { ControlServer.shared.start(store: store, deck: deck) }
+            else { ControlServer.shared.stop() }
             WindowBridge.shared.openMainWindow = { openWindow(id: "main") }
+            WindowBridge.shared.openHelpWindow = { openWindow(id: "help") }   // any scene id
             MenuBarController.shared.start(deck: deck, store: store)
             deck.onWidgetTick = { [self] in tickWidgets() }
             // headless UI review hook: open the editor on launch with a sample image
@@ -310,6 +313,15 @@ struct ContentView: View {
             }
             // the device may already be connected before this view exists
             if deck.connected { sendAll() }
+        }
+        .onChange(of: settings.mcpEnabled) { _, enabled in
+            if enabled {
+                ControlServer.shared.start(store: store, deck: deck)
+                Log.write("MCP control enabled")
+            } else {
+                ControlServer.shared.stop()
+                Log.write("MCP control disabled")
+            }
         }
         .onChange(of: deck.connected) { _, connected in
             // sync the open profile as soon as the panel appears

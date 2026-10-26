@@ -9,6 +9,14 @@ final class AppSettings: ObservableObject {
     /// Folder name under ~/Documents. Change this one constant when the project is renamed.
     static let appName = "Deckhand"
 
+    /// Lets external tools (the MCP server, scripts) drive Deckhand over its control socket.
+    @Published var mcpEnabled: Bool {
+        didSet {
+            defaults.set(mcpEnabled, forKey: "mcpEnabled")
+            NotificationCenter.default.post(name: .init("deck.mcpSettingChanged"), object: nil)
+        }
+    }
+
     /// Keeps the process (and therefore the panel) alive when the window is closed, with a status item.
     @Published var menuBarEnabled: Bool { didSet { defaults.set(menuBarEnabled, forKey: "menuBarEnabled") } }
 
@@ -25,6 +33,7 @@ final class AppSettings: ObservableObject {
     static var defaultGraphicsPath: String { defaultRoot.appendingPathComponent("Graphics").path }
 
     init() {
+        mcpEnabled = defaults.object(forKey: "mcpEnabled") as? Bool ?? true
         menuBarEnabled = defaults.object(forKey: "menuBarEnabled") as? Bool ?? true
         profilesFolder = defaults.string(forKey: "profilesFolder") ?? Self.defaultProfilesPath
         graphicsFolder = defaults.string(forKey: "graphicsFolder") ?? Self.defaultGraphicsPath
@@ -62,6 +71,12 @@ struct SettingsView: View {
                 Toggle("Keep running in the menu bar when the window is closed",
                        isOn: $settings.menuBarEnabled)
                 Text("The panel keeps working with no window open; the menu-bar icon brings Deckhand back.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Toggle("Allow MCP control (local socket)", isOn: $settings.mcpEnabled)
+                Text("Lets the deckhand-mcp server and your own scripts drive the app over "
+                     + "~/Library/Application Support/Deckhand/control.sock.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
